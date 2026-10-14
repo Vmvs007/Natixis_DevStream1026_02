@@ -36,4 +36,31 @@ public class TaskService {
 
         return doneTasks;
     }
+
+    public Task createTask(Task newTask){
+        newTask.setId(0L);
+        return taskRepository.save(newTask);
+    }
+
+    public Task updateTask(Long id, Task updatedTask){
+        Task existing = taskRepository.findById(id);
+
+        if(existing==null){
+            return null;
+        }
+
+        updatedTask.setId(id);
+        return taskRepository.save(updatedTask);
+    }
+
+    public boolean deleteTask(Long id){
+        Task existing = taskRepository.findById(id);
+
+        if(existing==null){
+            return false;
+        }
+
+        taskRepository.deleteById(id);
+        return true;
+    }
 }

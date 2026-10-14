@@ -1,8 +1,6 @@
 package pt.natixis.hello_spring.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pt.natixis.hello_spring.model.Task;
 import pt.natixis.hello_spring.service.TaskService;
 
@@ -31,4 +29,25 @@ public class TaskController {
     public List<Task> getDoneTasks() {
         return taskService.getTasksAlreadyDone();
     }
+
+    @PostMapping("/tasks")
+    public Task createTask(@RequestBody Task newTask) {
+        return taskService.createTask(newTask);
+    }
+
+    @PutMapping("/tasks/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task newTask) {
+        return taskService.updateTask(id, newTask);
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    public boolean deleteTask(@PathVariable Long id) {
+        if(taskService.deleteTask(id)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 }
