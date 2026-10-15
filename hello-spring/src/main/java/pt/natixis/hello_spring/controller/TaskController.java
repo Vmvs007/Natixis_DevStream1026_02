@@ -1,5 +1,6 @@
 package pt.natixis.hello_spring.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.natixis.hello_spring.model.Task;
 import pt.natixis.hello_spring.service.TaskService;
@@ -31,8 +32,15 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public Task createTask(@RequestBody Task newTask) {
-        return taskService.createTask(newTask);
+    public ResponseEntity<Task> createTask(@RequestBody Task newTask) {
+
+        Task createdTask = taskService.createTask(newTask);
+
+        if (createdTask == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(createdTask);
     }
 
     @PutMapping("/tasks/{id}")
@@ -41,11 +49,11 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{id}")
-    public boolean deleteTask(@PathVariable Long id) {
-        if(taskService.deleteTask(id)){
-            return true;
-        }else{
-            return false;
+    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+        if (taskService.deleteTask(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
 
     }

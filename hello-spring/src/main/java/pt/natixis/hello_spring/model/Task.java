@@ -1,6 +1,11 @@
 package pt.natixis.hello_spring.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
     private boolean done;

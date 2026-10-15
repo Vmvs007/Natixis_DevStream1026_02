@@ -21,7 +21,7 @@ public class TaskService {
     }
 
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id);
+        return taskRepository.findById(id).orElse(null);
     }
 
     public List<Task> getTasksAlreadyDone() {
@@ -38,12 +38,16 @@ public class TaskService {
     }
 
     public Task createTask(Task newTask){
-        newTask.setId(0L);
+
+        if(newTask.getDescription() == null || newTask.getDescription().isEmpty()){
+            return null;
+        }
+
         return taskRepository.save(newTask);
     }
 
     public Task updateTask(Long id, Task updatedTask){
-        Task existing = taskRepository.findById(id);
+        Task existing = taskRepository.findById(id).orElse(null);
 
         if(existing==null){
             return null;
@@ -54,7 +58,7 @@ public class TaskService {
     }
 
     public boolean deleteTask(Long id){
-        Task existing = taskRepository.findById(id);
+        Task existing = taskRepository.findById(id).orElse(null);
 
         if(existing==null){
             return false;
